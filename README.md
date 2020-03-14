@@ -1,8 +1,10 @@
 # cssinline
 
-CSS Inline is meant to make it easier to create React inline CSS styles and convert it to regular CSS styling
+CSS Inline is meant to make it easier to create JSX/TSX inline CSS styles and convert it to regular CSS styling
 
 ## Features
+
+![CSS Inline Example](./example/example.gif)
 
 CSS Inline currently provides 3 selection options:
 

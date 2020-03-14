@@ -1,10 +1,14 @@
 {
   "name": "cssinline",
   "displayName": "css-inline-converter",
-  "description": "Converts CSS from inline React to regular CSS",
-  "version": "1.0.0",
+  "description": "Converts CSS from inline JSX/TSX to regular CSS notation",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.43.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnmurphy01/css-inline.git"
   },
   "categories": [
     "Other"
