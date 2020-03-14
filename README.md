@@ -54,4 +54,9 @@ This extension is currently in development, so any issues or feedback would be a
 
 ### 1.0.0
 
-Initial release of CSS Inline
+- Initial release of CSS Inline
+
+### 1.0.1
+
+- Added messaging for failure and success
+- Include example GIF
