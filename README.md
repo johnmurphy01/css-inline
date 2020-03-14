@@ -1,4 +1,4 @@
-# cssinline
+# css-inline
 
 CSS Inline is meant to make it easier to create JSX/TSX inline CSS styles and convert it to regular CSS styling
 

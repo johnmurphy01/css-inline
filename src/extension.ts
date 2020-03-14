@@ -24,31 +24,39 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
+function trimWhitespaceAndNewLine(text: string) {
+  return text.trim().replace(/\r?\n|\r/g, "");
+}
+
 function convertHighlightedToCSS(text: string) {
-  let parsedText = text.trim().replace(/\r?\n|\r/g, "");
+  let trimmedText = trimWhitespaceAndNewLine(text);
   if (text && text.indexOf("{{") >= 0) {
     const match = text.match(/{([^{^}]*)}/);
     if (match) {
-      parsedText = match[1].trim().replace(/\r?\n|\r/g, "");
+      trimmedText = trimWhitespaceAndNewLine(match[1]);
     }
   }
 
+  let finalText = "";
+
   // if text doesn't contain a comma, there presumably is only one attr
-  if (parsedText.indexOf(",") < 0) {
-    const finalText = parse(text);
-    vscode.env.clipboard.writeText(finalText);
+  if (trimmedText.indexOf(",") < 0) {
+    finalText = parse(text);
   } else {
-    const attrs = parsedText.split(",");
-    let finalText = "";
+    const attrs = trimmedText.split(",");
     for (var attr of attrs) {
       if (attr === "") {
         continue;
       }
-      finalText += `${parse(attr)}\n`;
+      const parsedText = parse(attr);
+      if (parsedText === "") {
+        break;
+      }
+      finalText += `${parsedText}\n`;
     }
-
-    vscode.env.clipboard.writeText(finalText);
   }
+
+  vscode.env.clipboard.writeText(finalText);
 }
 
 function getTextSelection() {
@@ -61,6 +69,9 @@ function getTextSelection() {
       const highlight = editor.document.getText(wordRange);
 
       convertHighlightedToCSS(highlight);
+      vscode.window.showInformationMessage(
+        "CSS successfully copied to clipboard"
+      );
     } else {
       vscode.window.showWarningMessage("Please make a text selection");
     }
@@ -71,6 +82,10 @@ function getTextSelection() {
 
 function parse(text: string) {
   const keyValue = text.split(":");
+  if (keyValue.length === 0) {
+    vscode.window.showErrorMessage("Could not find CSS key value pairs");
+    return "";
+  }
   const kebabCaseAttr = _.kebabCase(keyValue[0]);
   const value = keyValue[1].replace(/["']/g, "");
 
