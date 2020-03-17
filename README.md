@@ -64,3 +64,7 @@ This extension is currently in development, so any issues or feedback would be a
 ### 1.0.2
 
 - Add Marketplace icon
+
+### 1.0.3
+
+- Add new Marketplace categories and tags
