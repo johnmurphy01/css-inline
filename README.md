@@ -60,3 +60,7 @@ This extension is currently in development, so any issues or feedback would be a
 
 - Added messaging for failure and success
 - Include example GIF
+
+### 1.0.2
+
+- Add Marketplace icon
