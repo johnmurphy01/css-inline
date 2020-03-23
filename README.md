@@ -72,3 +72,9 @@ This extension is currently in development, so any issues or feedback would be a
 ### 1.0.4
 
 - Use Webpack to bundle extension
+
+### 1.0.5
+
+- Fixed issue with parsing CSS values with commas
+- Added unit tests
+- Create Github action to compile and run tests
