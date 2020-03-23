@@ -68,3 +68,7 @@ This extension is currently in development, so any issues or feedback would be a
 ### 1.0.3
 
 - Add new Marketplace categories and tags
+
+### 1.0.4
+
+- Use Webpack to bundle extension
