@@ -28,7 +28,7 @@ function trimWhitespaceAndNewLine(text: string) {
   return text.trim().replace(/\r?\n|\r/g, "");
 }
 
-function convertHighlightedToCSS(text: string) {
+export function convertHighlightedToCSS(text: string) {
   let trimmedText = trimWhitespaceAndNewLine(text);
   if (text && text.indexOf("{{") >= 0) {
     const match = text.match(/{([^{^}]*)}/);
@@ -39,24 +39,35 @@ function convertHighlightedToCSS(text: string) {
 
   let finalText = "";
 
-  // if text doesn't contain a comma, there presumably is only one attr
-  if (trimmedText.indexOf(",") < 0) {
-    finalText = parse(text);
-  } else {
-    const attrs = trimmedText.split(",");
-    for (var attr of attrs) {
-      if (attr === "") {
-        continue;
-      }
-      const parsedText = parse(attr);
-      if (parsedText === "") {
-        break;
-      }
+  const valueMatches = trimmedText.match(/'.*?'|".*?"/gi);
+  const keyMatches = trimmedText.match(/(^|,\n|',|",).*?:/gi);
+
+  if (!keyMatches || !valueMatches) {
+    vscode.window.showErrorMessage(
+      "There was an issue parsing the CSS string. Please report to https://github.com/johnmurphy01/css-inline"
+    );
+    return;
+  }
+
+  for (var i = 0; i < keyMatches.length; i++) {
+    const key = keyMatches[i].replace(/:/g, "");
+    const value = valueMatches[i].replace(/',/g, "").replace(/",/g, "");
+    if (key === "" || value === "") {
+      continue;
+    }
+    const parsedText = parse(key, value);
+    if (parsedText === "") {
+      break;
+    }
+
+    if (keyMatches.length > 1 && i < keyMatches.length - 1) {
       finalText += `${parsedText}\n`;
+    } else {
+      finalText += `${parsedText}`;
     }
   }
 
-  vscode.env.clipboard.writeText(finalText);
+  return finalText;
 }
 
 function getTextSelection() {
@@ -68,7 +79,12 @@ function getTextSelection() {
     if (wordRange) {
       const highlight = editor.document.getText(wordRange);
 
-      convertHighlightedToCSS(highlight);
+      const finalText = convertHighlightedToCSS(highlight);
+      if (!finalText) {
+        vscode.window.showErrorMessage("No CSS copied to the clipboard");
+        return;
+      }
+      vscode.env.clipboard.writeText(finalText);
       vscode.window.showInformationMessage(
         "CSS successfully copied to clipboard"
       );
@@ -80,16 +96,15 @@ function getTextSelection() {
   }
 }
 
-function parse(text: string) {
-  const keyValue = text.split(":");
-  if (keyValue.length === 0) {
-    vscode.window.showErrorMessage("Could not find CSS key value pairs");
-    return "";
-  }
-  const kebabCaseAttr = _.kebabCase(keyValue[0]);
-  const value = keyValue[1].replace(/["']/g, "");
+function parse(key: string, value: string) {
+  const kebabCaseAttr = _.kebabCase(key);
+  let valueSansQuotes = value.replace(/["']/g, "");
 
-  return `${kebabCaseAttr}:${value};`;
+  if (valueSansQuotes.indexOf(",") === valueSansQuotes.length - 1) {
+    valueSansQuotes = valueSansQuotes.substring(0, valueSansQuotes.length - 1);
+  }
+
+  return `${kebabCaseAttr}: ${valueSansQuotes};`;
 }
 
 // this method is called when your extension is deactivated
