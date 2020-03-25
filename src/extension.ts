@@ -39,8 +39,8 @@ export function convertHighlightedToCSS(text: string) {
 
   let finalText = "";
 
-  const valueMatches = trimmedText.match(/'.*?'|".*?"/gi);
-  const keyMatches = trimmedText.match(/(^|,\n|',|",).*?:/gi);
+  const valueMatches = trimmedText.match(/'.*?'|".*?"|[0-9]\.?[0-9]?/gi);
+  const keyMatches = trimmedText.match(/(^|,\n|',|",|[0-9],).*?:/gi);
 
   if (!keyMatches || !valueMatches) {
     vscode.window.showErrorMessage(
@@ -50,7 +50,10 @@ export function convertHighlightedToCSS(text: string) {
   }
 
   for (var i = 0; i < keyMatches.length; i++) {
-    const key = keyMatches[i].replace(/:/g, "");
+    const key =
+      keyMatches[i].indexOf(",") > 0
+        ? keyMatches[i].substr(keyMatches[i].indexOf(",") + 1).replace(/:/g, "")
+        : keyMatches[i].replace(/:/g, "");
     const value = valueMatches[i].replace(/',/g, "").replace(/",/g, "");
     if (key === "" || value === "") {
       continue;

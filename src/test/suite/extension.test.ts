@@ -63,4 +63,24 @@ suite("Extension Test Suite", () => {
     const result = cssInline.convertHighlightedToCSS("");
     assert.equal(result, undefined);
   });
+
+  test("should be able to convert styles with combination of strings and ints", () => {
+    const result = cssInline.convertHighlightedToCSS(
+      'opacity:0,\nfontSize:"0.775em",\nfontWeight: "bold",\nfontStyle:"italic"'
+    );
+    assert.equal(
+      result,
+      "opacity: 0;\nfont-size: 0.775em;\nfont-weight: bold;\nfont-style: italic;"
+    );
+  });
+
+  test("should be able to convert styles with combination of strings and decimals", () => {
+    const result = cssInline.convertHighlightedToCSS(
+      'opacity:0.6,\nfontSize:"0.775em",\nfontWeight: "bold",\nfontStyle:"italic"'
+    );
+    assert.equal(
+      result,
+      "opacity: 0.6;\nfont-size: 0.775em;\nfont-weight: bold;\nfont-style: italic;"
+    );
+  });
 });
