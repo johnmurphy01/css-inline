@@ -78,3 +78,8 @@ This extension is currently in development, so any issues or feedback would be a
 - Fixed issue with parsing CSS values with commas
 - Added unit tests
 - Create Github action to compile and run tests
+
+### 1.0.6
+
+- Fixed issue with parsing CSS values with combination of strings and numbers
+- Added unit test to verify the fix
