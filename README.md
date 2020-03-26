@@ -83,3 +83,8 @@ This extension is currently in development, so any issues or feedback would be a
 
 - Fixed issue with parsing CSS values with combination of strings and numbers
 - Added unit test to verify the fix
+
+### 1.0.7
+
+- Fixed issue with parseing CSS values with rgba values followed by another property
+- Added unit test to verify the fix

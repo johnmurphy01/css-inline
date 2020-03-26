@@ -3,7 +3,7 @@
   "displayName": "css-inline-converter",
   "description": "Converts CSS from inline JSX/TSX to regular CSS notation",
   "icon": "images/icon.png",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "engines": {
     "vscode": "^1.43.0"
   },

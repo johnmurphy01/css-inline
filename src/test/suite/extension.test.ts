@@ -83,4 +83,14 @@ suite("Extension Test Suite", () => {
       "opacity: 0.6;\nfont-size: 0.775em;\nfont-weight: bold;\nfont-style: italic;"
     );
   });
+
+  test("should be able to convert box shadow styles", () => {
+    const result = cssInline.convertHighlightedToCSS(
+      "alignItems: 'center',\nboxShadow: 'rgba(163, 163, 163, 0.53) 0px 2px 4px 0px',\nbackgroundColor: 'white'"
+    );
+    assert.equal(
+      result,
+      "align-items: center;\nbox-shadow: rgba(163, 163, 163, 0.53) 0px 2px 4px 0px;\nbackground-color: white;"
+    );
+  });
 });

@@ -40,7 +40,7 @@ export function convertHighlightedToCSS(text: string) {
   let finalText = "";
 
   const valueMatches = trimmedText.match(/'.*?'|".*?"|[0-9]\.?[0-9]?/gi);
-  const keyMatches = trimmedText.match(/(^|,\n|',|",|[0-9],).*?:/gi);
+  const keyMatches = trimmedText.match(/(^|,\n|',|",|[0-9],\s?[a-z]).*?:/gi);
 
   if (!keyMatches || !valueMatches) {
     vscode.window.showErrorMessage(
